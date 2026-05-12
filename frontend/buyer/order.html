@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Details — Vendora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="bg-gray-50">
+
+  <div id="navbar"></div>
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-8">
+      <a href="orders.html"
+         class="text-gray-400 hover:text-gray-600 transition">←</a>
+      <h1 class="text-3xl font-bold text-gray-900">Order Details</h1>
+    </div>
+
+    <!-- Order Content -->
+    <div id="order-content" class="space-y-6">
+
+      <!-- Status Timeline -->
+      <div class="bg-white rounded-xl shadow-sm border
+                  border-gray-100 p-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-6">
+          Order Status
+        </h2>
+
+        <!-- Timeline -->
+        <div class="flex items-center justify-between" id="timeline">
+        </div>
+
+        <!-- Order Meta -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6
+                    pt-6 border-t border-gray-100">
+          <div>
+            <p class="text-xs text-gray-400">Order ID</p>
+            <p class="font-bold text-gray-900" id="order-id"></p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Date Placed</p>
+            <p class="font-medium text-gray-700" id="order-date"></p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Payment</p>
+            <p class="font-medium" id="order-payment"></p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Total</p>
+            <p class="font-bold text-indigo-600 text-lg"
+               id="order-total"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <div class="bg-white rounded-xl shadow-sm border
+                  border-gray-100 p-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-4">
+          Items Ordered
+        </h2>
+        <div id="order-items" class="space-y-4"></div>
+      </div>
+
+      <!-- Delivery Address -->
+      <div class="bg-white rounded-xl shadow-sm border
+                  border-gray-100 p-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-4">
+          📍 Delivery Address
+        </h2>
+        <div id="delivery-address" class="text-gray-600"></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-3" id="order-actions"></div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/core/auth.js"></script>
+  <script src="../js/core/api.js"></script>
+  <script src="../js/core/router.js"></script>
+  <script src="../js/core/utils.js"></script>
+  <script src="../js/components/toast.js"></script>
+  <script src="../js/components/loader.js"></script>
+  <script src="../js/components/modal.js"></script>
+  <script src="../js/components/navbar.js"></script>
+  <script src="../js/pages/buyer/order.js"></script>
+</body>
+</html>

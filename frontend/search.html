@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search — Vendora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-gray-50">
+
+  <div id="navbar"></div>
+
+  <div class="max-w-7xl mx-auto px-4 py-8">
+
+    <!-- Search Header -->
+    <div class="mb-8">
+      <div class="flex gap-3 max-w-2xl">
+        <input type="text" id="search-input"
+               placeholder="Search products..."
+               class="flex-1 min-w-0 px-4 py-3 border border-gray-300
+                      rounded-xl focus:outline-none focus:ring-2
+                      focus:ring-indigo-500 text-lg"/>
+        <button onclick="doSearch()"
+                class="bg-indigo-600 text-white px-6 py-3 rounded-xl
+                       font-semibold hover:bg-indigo-700 transition
+                       flex-shrink-0">
+          Search
+        </button>
+      </div>
+      <p class="text-gray-500 mt-3" id="results-count"></p>
+    </div>
+
+    <!-- Results Grid -->
+    <div id="products-grid"
+         class="grid grid-cols-2 sm:grid-cols-3
+                md:grid-cols-4 lg:grid-cols-4 gap-4">
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-20">
+      <p class="text-5xl mb-4">🔍</p>
+      <h3 class="text-xl font-semibold text-gray-700 mb-2">
+        No results found
+      </h3>
+      <p class="text-gray-500 mb-6">
+        Try different keywords or browse our categories
+      </p>
+      <a href="products.html"
+         class="bg-indigo-600 text-white px-6 py-3 rounded-xl
+                hover:bg-indigo-700 transition inline-block">
+        Browse All Products
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/core/auth.js"></script>
+  <script src="js/core/api.js"></script>
+  <script src="js/core/router.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/components/toast.js"></script>
+  <script src="js/components/loader.js"></script>
+  <script src="js/components/modal.js"></script>
+  <script src="js/components/navbar.js"></script>
+  <script src="js/components/productCard.js"></script>
+  <script src="js/pages/search.js"></script>
+</body>
+</html>

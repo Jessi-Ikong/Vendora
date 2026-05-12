@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — Vendora</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <link rel="stylesheet" href="../css/main.css" />
+  </head>
+  <body class="bg-gray-50">
+    <div id="navbar"></div>
+
+    <!-- Mobile Menu State (Alpine.js) -->
+    <div x-data="{ sidebarOpen: false }" @keydown.escape="sidebarOpen = false">
+      <!-- Mobile Hamburger Button -->
+      <button
+        @click="sidebarOpen = !sidebarOpen"
+        class="lg:hidden fixed top-20 left-4 z-40 p-2.5 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700 transition"
+      >
+        <span
+          x-text="sidebarOpen ? '✕' : '☰'"
+          class="text-xl font-bold"
+        ></span>
+      </button>
+
+      <!-- Mobile Backdrop -->
+      <div
+        x-show="sidebarOpen"
+        @click="sidebarOpen = false"
+        class="lg:hidden fixed inset-0 bg-black bg-opacity-40 z-30 transition-opacity"
+        style="display: none"
+      ></div>
+
+      <div class="flex min-h-screen">
+        <!-- ─── Sidebar ─── -->
+        <aside
+          class="w-64 bg-white border-r border-gray-100 fixed top-16 left-0 bottom-0 overflow-y-auto hidden lg:block lg:relative lg:z-auto z-40 transform transition-transform duration-300 ease-out lg:transform-none"
+          :class="sidebarOpen ? 'block' : 'hidden lg:block'"
+          @click="sidebarOpen = false"
+        >
+          <div class="p-6">
+            <p
+              class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4"
+            >
+              Admin Menu
+            </p>
+            <nav class="space-y-1">
+              <a
+                href="dashboard.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-50 text-indigo-600 font-medium"
+              >
+                <span>📊</span> Dashboard
+              </a>
+              <a
+                href="users.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+              >
+                <span>👥</span> Users
+              </a>
+              <a
+                href="vendors.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+              >
+                <span>🏪</span> Vendors
+              </a>
+              <a
+                href="products.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+              >
+                <span>📦</span> Products
+              </a>
+              <a
+                href="orders.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+              >
+                <span>🛍️</span> Orders
+              </a>
+              <a
+                href="categories.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+              >
+                <span>🗂️</span> Categories
+              </a>
+              <a
+                href="reviews.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+              >
+                <span>⭐</span> Reviews
+              </a>
+              <a
+                href="analytics.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+              >
+                <span>📈</span> Analytics
+              </a>
+              <hr class="my-3 border-gray-100" />
+              <a
+                href="../index.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition"
+              >
+                <span>🏠</span> View Store
+              </a>
+              <button
+                onclick="Auth.logout()"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition w-full text-left"
+              >
+                <span>🚪</span> Logout
+              </button>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- ─── Main Content ─── -->
+        <main class="flex-1 lg:ml-64 p-6">
+          <!-- Header -->
+          <div class="mb-8 flex items-center justify-between">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+              <p class="text-gray-500 mt-1">Platform overview and analytics</p>
+            </div>
+            <button
+              id="refresh-btn"
+              onclick="refreshDashboard()"
+              class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium"
+              title="Refresh dashboard data"
+            >
+              🔄 Refresh
+            </button>
+          </div>
+
+          <!-- ─── Stats Cards ─── -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div
+              class="bg-white rounded-xl p-5 shadow-sm border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <p class="text-sm text-gray-500">Total Revenue</p>
+                <span class="text-2xl">💰</span>
+              </div>
+              <p class="text-2xl font-bold text-gray-900" id="stat-revenue">
+                —
+              </p>
+            </div>
+            <div
+              class="bg-white rounded-xl p-5 shadow-sm border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <p class="text-sm text-gray-500">Total Orders</p>
+                <span class="text-2xl">📦</span>
+              </div>
+              <p class="text-2xl font-bold text-gray-900" id="stat-orders">—</p>
+            </div>
+            <div
+              class="bg-white rounded-xl p-5 shadow-sm border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <p class="text-sm text-gray-500">Total Users</p>
+                <span class="text-2xl">👥</span>
+              </div>
+              <p class="text-2xl font-bold text-gray-900" id="stat-users">—</p>
+            </div>
+            <div
+              class="bg-white rounded-xl p-5 shadow-sm border border-gray-100"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <p class="text-sm text-gray-500">Active Vendors</p>
+                <span class="text-2xl">🏪</span>
+              </div>
+              <p class="text-2xl font-bold text-gray-900" id="stat-vendors">
+                —
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Revenue Chart -->
+            <div
+              class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+              <h2 class="text-lg font-bold text-gray-900 mb-4">
+                Platform Revenue (Last 6 Months)
+              </h2>
+              <div class="relative w-full overflow-hidden">
+                <canvas id="revenue-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- Top Vendors -->
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-900">Top Vendors</h2>
+                <a
+                  href="vendors.html"
+                  class="text-indigo-600 text-sm hover:underline"
+                >
+                  View all →
+                </a>
+              </div>
+              <div id="top-vendors" class="space-y-3"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Top Products -->
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-900">Top Products</h2>
+                <a
+                  href="products.html"
+                  class="text-indigo-600 text-sm hover:underline"
+                >
+                  View all →
+                </a>
+              </div>
+              <div id="top-products" class="space-y-3"></div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-900">Recent Orders</h2>
+                <a
+                  href="orders.html"
+                  class="text-indigo-600 text-sm hover:underline"
+                >
+                  View all →
+                </a>
+              </div>
+              <div id="recent-orders"></div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/core/api.js"></script>
+    <script src="../js/core/router.js"></script>
+    <script src="../js/core/utils.js"></script>
+    <script src="../js/components/toast.js"></script>
+    <script src="../js/components/loader.js"></script>
+    <script src="../js/components/modal.js"></script>
+    <script src="../js/components/navbar.js"></script>
+    <script src="../js/pages/admin/dashboard.js"></script>
+  </body>
+</html>

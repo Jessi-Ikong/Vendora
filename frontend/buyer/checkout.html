@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Vendora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="bg-gray-50">
+
+  <div id="navbar"></div>
+
+  <div class="max-w-5xl mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-8">
+      <a href="cart.html"
+         class="text-gray-400 hover:text-gray-600 transition">←</a>
+      <h1 class="text-3xl font-bold text-gray-900">Checkout</h1>
+    </div>
+
+    <!-- ─── Progress Steps ─── -->
+    <div class="flex items-center justify-center mb-10">
+      <div class="flex items-center gap-3">
+
+        <!-- Step 1 -->
+        <div class="flex items-center gap-2">
+          <div id="indicator-1"
+               class="w-8 h-8 bg-indigo-600 text-white rounded-full
+                      flex items-center justify-center text-sm font-bold">
+            1
+          </div>
+          <span id="label-1"
+                class="text-sm font-medium text-indigo-600">
+            Delivery
+          </span>
+        </div>
+
+        <!-- Line 1-2 -->
+        <div id="line-1" class="w-16 h-0.5 bg-gray-200 transition"></div>
+
+        <!-- Step 2 -->
+        <div class="flex items-center gap-2">
+          <div id="indicator-2"
+               class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full
+                      flex items-center justify-center text-sm font-bold">
+            2
+          </div>
+          <span id="label-2"
+                class="text-sm font-medium text-gray-400">
+            Payment
+          </span>
+        </div>
+
+        <!-- Line 2-3 -->
+        <div id="line-2" class="w-16 h-0.5 bg-gray-200 transition"></div>
+
+        <!-- Step 3 -->
+        <div class="flex items-center gap-2">
+          <div id="indicator-3"
+               class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full
+                      flex items-center justify-center text-sm font-bold">
+            3
+          </div>
+          <span id="label-3"
+                class="text-sm font-medium text-gray-400">
+            Confirmation
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- ─── Left Column ─── -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- STEP 1 — Delivery -->
+        <div id="step-1-content">
+
+          <!-- Saved Addresses -->
+          <div class="bg-white rounded-xl shadow-sm border
+                      border-gray-100 p-6 mb-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-4">
+              📍 Delivery Address
+            </h2>
+            <div id="saved-addresses" class="space-y-3 mb-4"></div>
+
+            <!-- Add New Address Toggle -->
+            <div x-data="{ open: false }">
+              <button @click="open = !open"
+                      class="text-indigo-600 text-sm hover:underline">
+                <span x-text="open ? '− Cancel' : '+ Add new address'">
+                </span>
+              </button>
+              <div x-show="open" class="mt-4 space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-xs text-gray-500 mb-1 block">
+                      Full Name *
+                    </label>
+                    <input type="text" id="new-full-name"
+                           class="w-full px-3 py-2 border border-gray-300
+                                  rounded-lg text-sm focus:outline-none
+                                  focus:ring-2 focus:ring-indigo-500"/>
+                  </div>
+                  <div>
+                    <label class="text-xs text-gray-500 mb-1 block">
+                      Phone *
+                    </label>
+                    <input type="text" id="new-phone"
+                           class="w-full px-3 py-2 border border-gray-300
+                                  rounded-lg text-sm focus:outline-none
+                                  focus:ring-2 focus:ring-indigo-500"/>
+                  </div>
+                </div>
+                <input type="text" id="new-address1"
+                       placeholder="Address Line 1 *"
+                       class="w-full px-3 py-2 border border-gray-300
+                              rounded-lg text-sm focus:outline-none
+                              focus:ring-2 focus:ring-indigo-500"/>
+                <input type="text" id="new-address2"
+                       placeholder="Address Line 2 (optional)"
+                       class="w-full px-3 py-2 border border-gray-300
+                              rounded-lg text-sm focus:outline-none
+                              focus:ring-2 focus:ring-indigo-500"/>
+                <div class="grid grid-cols-2 gap-3">
+                  <input type="text" id="new-city"
+                         placeholder="City *"
+                         class="w-full px-3 py-2 border border-gray-300
+                                rounded-lg text-sm focus:outline-none
+                                focus:ring-2 focus:ring-indigo-500"/>
+                  <input type="text" id="new-state"
+                         placeholder="State *"
+                         class="w-full px-3 py-2 border border-gray-300
+                                rounded-lg text-sm focus:outline-none
+                                focus:ring-2 focus:ring-indigo-500"/>
+                </div>
+                <button onclick="saveNewAddress()"
+                        class="bg-indigo-600 text-white px-4 py-2
+                               rounded-lg text-sm hover:bg-indigo-700
+                               transition">
+                  Save Address
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Notes -->
+          <div class="bg-white rounded-xl shadow-sm border
+                      border-gray-100 p-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-4">
+              📝 Order Notes (Optional)
+            </h2>
+            <textarea id="order-notes" rows="3"
+                      placeholder="Any special instructions..."
+                      class="w-full px-4 py-3 border border-gray-300
+                             rounded-lg text-sm focus:outline-none
+                             focus:ring-2 focus:ring-indigo-500
+                             resize-none"></textarea>
+          </div>
+
+          <!-- Continue Button -->
+          <button onclick="goToPayment()"
+                  class="w-full bg-indigo-600 text-white py-4
+                         rounded-xl font-bold text-lg
+                         hover:bg-indigo-700 transition mt-6">
+            Continue to Payment →
+          </button>
+
+        </div>
+
+        <!-- STEP 2 — Payment -->
+        <div id="step-2-content" class="hidden">
+          <div class="bg-white rounded-xl shadow-sm border
+                      border-gray-100 p-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-2">
+              💳 Payment
+            </h2>
+            <p class="text-gray-500 text-sm mb-6">
+              You'll be redirected to Paystack to complete
+              your payment securely.
+            </p>
+
+            <!-- Selected Address Summary -->
+            <div class="bg-gray-50 rounded-xl p-4 mb-6">
+              <p class="text-sm font-medium text-gray-700 mb-1">
+                📍 Delivering to:
+              </p>
+              <p class="text-sm text-gray-600"
+                 id="selected-addr-summary"></p>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="space-y-3 mb-6">
+              <p class="text-sm font-medium text-gray-700">
+                Accepted Payment Methods:
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <span class="px-3 py-1.5 bg-gray-100 rounded-lg
+                             text-sm text-gray-600">
+                  💳 Debit/Credit Card
+                </span>
+                <span class="px-3 py-1.5 bg-gray-100 rounded-lg
+                             text-sm text-gray-600">
+                  🏦 Bank Transfer
+                </span>
+                <span class="px-3 py-1.5 bg-gray-100 rounded-lg
+                             text-sm text-gray-600">
+                  📱 USSD
+                </span>
+                <span class="px-3 py-1.5 bg-gray-100 rounded-lg
+                             text-sm text-gray-600">
+                  💰 Opay
+                </span>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3">
+              <button onclick="goBack()"
+                      class="flex-1 border border-gray-300 py-3
+                             rounded-xl font-medium hover:bg-gray-50
+                             transition">
+                ← Back
+              </button>
+              <button onclick="placeOrder()"
+                      id="place-order-btn"
+                      class="flex-1 bg-indigo-600 text-white py-3
+                             rounded-xl font-bold hover:bg-indigo-700
+                             transition disabled:opacity-50">
+                Pay Now →
+              </button>
+            </div>
+
+            <p class="text-xs text-gray-400 text-center mt-4">
+              🔒 Your payment is secured by Paystack
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ─── Right — Order Summary ─── -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-xl shadow-sm border
+                    border-gray-100 p-6 sticky top-20">
+          <h2 class="text-lg font-bold text-gray-900 mb-4">
+            Order Summary
+          </h2>
+
+          <div id="checkout-items" class="space-y-3 mb-4"></div>
+
+          <div class="border-t border-gray-100 pt-4 space-y-2">
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-500">Subtotal</span>
+              <span id="checkout-subtotal" class="font-medium"></span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-500">Delivery</span>
+              <span class="text-green-600 font-medium">Free</span>
+            </div>
+            <div class="flex justify-between font-bold text-lg
+                        pt-2 border-t border-gray-100">
+              <span>Total</span>
+              <span id="checkout-total" class="text-indigo-600"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/core/auth.js"></script>
+  <script src="../js/core/api.js"></script>
+  <script src="../js/core/router.js"></script>
+  <script src="../js/core/utils.js"></script>
+  <script src="../js/components/toast.js"></script>
+  <script src="../js/components/loader.js"></script>
+  <script src="../js/components/modal.js"></script>
+  <script src="../js/components/navbar.js"></script>
+  <script src="../js/pages/buyer/checkout.js"></script>
+</body>
+</html>

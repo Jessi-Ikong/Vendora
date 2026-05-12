@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — Vendora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="bg-gray-50">
+
+  <div id="navbar"></div>
+
+  <div class="max-w-3xl mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-8">
+      <a href="dashboard.html"
+         class="text-gray-400 hover:text-gray-600 transition">←</a>
+      <h1 class="text-3xl font-bold text-gray-900">My Profile</h1>
+    </div>
+
+    <div class="space-y-6">
+
+      <!-- ─── Profile Info ─── -->
+      <div class="bg-white rounded-xl shadow-sm border
+                  border-gray-100 p-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-6">
+          Personal Information
+        </h2>
+
+        <!-- Avatar -->
+        <div class="flex items-center gap-6 mb-6">
+          <div class="w-20 h-20 bg-indigo-100 rounded-full flex
+                      items-center justify-center text-3xl font-bold
+                      text-indigo-600" id="avatar-display">
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900" id="display-name"></p>
+            <p class="text-gray-500 text-sm" id="display-email"></p>
+            <p class="text-xs text-gray-400 mt-1" id="display-joined"></p>
+          </div>
+        </div>
+
+        <!-- Update Form -->
+        <form id="profile-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Full Name
+            </label>
+            <input type="text" id="profile-name"
+                   class="w-full px-4 py-3 border border-gray-300
+                          rounded-lg focus:outline-none focus:ring-2
+                          focus:ring-indigo-500"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Email Address
+            </label>
+            <input type="email" id="profile-email" disabled
+                   class="w-full px-4 py-3 border border-gray-200
+                          rounded-lg bg-gray-50 text-gray-400
+                          cursor-not-allowed"/>
+            <p class="text-xs text-gray-400 mt-1">
+              Email cannot be changed
+            </p>
+          </div>
+          <button type="submit"
+                  class="bg-indigo-600 text-white px-6 py-3
+                         rounded-lg font-medium hover:bg-indigo-700
+                         transition">
+            Save Changes
+          </button>
+        </form>
+      </div>
+
+      <!-- ─── Change Password ─── -->
+      <div class="bg-white rounded-xl shadow-sm border
+                  border-gray-100 p-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-6">
+          Change Password
+        </h2>
+        <form id="password-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Current Password
+            </label>
+            <input type="password" id="current-password"
+                   class="w-full px-4 py-3 border border-gray-300
+                          rounded-lg focus:outline-none focus:ring-2
+                          focus:ring-indigo-500"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              New Password
+            </label>
+            <input type="password" id="new-password"
+                   placeholder="Min. 6 characters"
+                   class="w-full px-4 py-3 border border-gray-300
+                          rounded-lg focus:outline-none focus:ring-2
+                          focus:ring-indigo-500"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Confirm New Password
+            </label>
+            <input type="password" id="confirm-password"
+                   class="w-full px-4 py-3 border border-gray-300
+                          rounded-lg focus:outline-none focus:ring-2
+                          focus:ring-indigo-500"/>
+          </div>
+          <button type="submit"
+                  class="bg-gray-800 text-white px-6 py-3
+                         rounded-lg font-medium hover:bg-gray-900
+                         transition">
+            Update Password
+          </button>
+        </form>
+      </div>
+
+      <!-- ─── Danger Zone ─── -->
+      <div class="bg-white rounded-xl shadow-sm border
+                  border-red-100 p-6">
+        <h2 class="text-lg font-bold text-red-600 mb-2">
+          Account Actions
+        </h2>
+        <p class="text-gray-500 text-sm mb-4">
+          Manage your account session
+        </p>
+        <button onclick="Auth.logout()"
+                class="bg-red-50 text-red-600 px-6 py-3 rounded-lg
+                       font-medium hover:bg-red-100 transition">
+          Logout from all devices
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/core/auth.js"></script>
+  <script src="../js/core/api.js"></script>
+  <script src="../js/core/router.js"></script>
+  <script src="../js/core/utils.js"></script>
+  <script src="../js/components/toast.js"></script>
+  <script src="../js/components/loader.js"></script>
+  <script src="../js/components/modal.js"></script>
+  <script src="../js/components/navbar.js"></script>
+  <script src="../js/pages/buyer/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Dashboard — Vendora</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <link rel="stylesheet" href="../css/main.css" />
+  </head>
+  <body class="bg-gray-50">
+    <div id="navbar"></div>
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <!-- Header -->
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900" id="welcome-msg">
+            Welcome back!
+          </h1>
+          <p class="text-gray-500 mt-1">
+            Here's what's happening with your account
+          </p>
+        </div>
+        <a
+          href="../index.html"
+          class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-indigo-700 transition flex items-center gap-2"
+        >
+          🛒 Continue Shopping
+        </a>
+      </div>
+
+      <!-- ─── Stats Cards ─── -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm text-gray-500">Total Orders</p>
+            <span class="text-2xl">📦</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900" id="stat-orders">—</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm text-gray-500">Pending</p>
+            <span class="text-2xl">⏳</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900" id="stat-pending">—</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm text-gray-500">Delivered</p>
+            <span class="text-2xl">✅</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900" id="stat-delivered">—</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm text-gray-500">Wishlist</p>
+            <span class="text-2xl">❤️</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900" id="stat-wishlist">—</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- ─── Recent Orders ─── -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-lg font-bold text-gray-900">Recent Orders</h2>
+              <a
+                href="orders.html"
+                class="text-indigo-600 text-sm hover:underline"
+              >
+                View all →
+              </a>
+            </div>
+
+            <div id="recent-orders">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Quick Links ─── -->
+        <div class="space-y-4">
+          <!-- Profile Card -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div
+                class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center text-2xl font-bold text-indigo-600"
+                id="avatar-initial"
+              ></div>
+              <div>
+                <p class="font-bold text-gray-900" id="profile-name"></p>
+                <p class="text-sm text-gray-500" id="profile-email"></p>
+              </div>
+            </div>
+            <a
+              href="profile.html"
+              class="block w-full text-center bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 rounded-lg text-sm transition"
+            >
+              Edit Profile
+            </a>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="font-bold text-gray-900 mb-4">Quick Links</h3>
+            <div class="space-y-2">
+              <a
+                href="orders.html"
+                class="flex items-center gap-3 p-3 rounded-lg hover:bg-indigo-50 transition group"
+              >
+                <span class="text-xl">📦</span>
+                <span
+                  class="text-sm font-medium text-gray-700 group-hover:text-indigo-600"
+                >
+                  My Orders
+                </span>
+              </a>
+              <a
+                href="wishlist.html"
+                class="flex items-center gap-3 p-3 rounded-lg hover:bg-indigo-50 transition group"
+              >
+                <span class="text-xl">❤️</span>
+                <span
+                  class="text-sm font-medium text-gray-700 group-hover:text-indigo-600"
+                >
+                  My Wishlist
+                </span>
+              </a>
+              <a
+                href="addresses.html"
+                class="flex items-center gap-3 p-3 rounded-lg hover:bg-indigo-50 transition group"
+              >
+                <span class="text-xl">📍</span>
+                <span
+                  class="text-sm font-medium text-gray-700 group-hover:text-indigo-600"
+                >
+                  My Addresses
+                </span>
+              </a>
+
+              <a
+                href="../index.html"
+                class="flex items-center gap-3 p-3 rounded-lg hover:bg-indigo-50 transition group"
+              >
+                <span class="text-xl">🏠</span>
+                <span
+                  class="text-sm font-medium text-gray-700 group-hover:text-indigo-600"
+                >
+                  Back to Store
+                </span>
+              </a>
+
+              <a
+                href="cart.html"
+                class="flex items-center gap-3 p-3 rounded-lg hover:bg-indigo-50 transition group"
+              >
+                <span class="text-xl">🛒</span>
+                <span
+                  class="text-sm font-medium text-gray-700 group-hover:text-indigo-600"
+                >
+                  My Cart
+                </span>
+              </a>
+              <a
+                href="profile.html"
+                class="flex items-center gap-3 p-3 rounded-lg hover:bg-indigo-50 transition group"
+              >
+                <span class="text-xl">⚙️</span>
+                <span
+                  class="text-sm font-medium text-gray-700 group-hover:text-indigo-600"
+                >
+                  Account Settings
+                </span>
+              </a>
+              <button
+                onclick="Auth.logout()"
+                class="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 transition group w-full"
+              >
+                <span class="text-xl">🚪</span>
+                <span class="text-sm font-medium text-red-600"> Logout </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/core/api.js"></script>
+    <script src="../js/core/router.js"></script>
+    <script src="../js/core/utils.js"></script>
+    <script src="../js/components/toast.js"></script>
+    <script src="../js/components/loader.js"></script>
+    <script src="../js/components/modal.js"></script>
+    <script src="../js/components/navbar.js"></script>
+    <script src="../js/pages/buyer/dashboard.js"></script>
+  </body>
+</html>

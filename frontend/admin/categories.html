@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories — Admin — Vendora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="bg-gray-50">
+  <div id="navbar"></div>
+  <div class="flex min-h-screen">
+    <aside class="w-64 bg-white border-r border-gray-100 fixed top-16 left-0 bottom-0 overflow-y-auto hidden lg:block">
+      <div class="p-6">
+        <nav class="space-y-1">
+          <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50"><span>📊</span> Dashboard</a>
+          <a href="users.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50"><span>👥</span> Users</a>
+          <a href="vendors.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50"><span>🏪</span> Vendors</a>
+          <a href="products.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50"><span>📦</span> Products</a>
+          <a href="orders.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50"><span>🛍️</span> Orders</a>
+          <a href="categories.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-50 text-indigo-600 font-medium"><span>🗂️</span> Categories</a>
+          <a href="reviews.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50"><span>⭐</span> Reviews</a>
+          <a href="analytics.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50"><span>📈</span> Analytics</a>
+          <hr class="my-3 border-gray-100">
+          <a href="../index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50"><span>🏠</span> View Store</a>
+          <button onclick="Auth.logout()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 w-full text-left"><span>🚪</span> Logout</button>
+        </nav>
+      </div>
+    </aside>
+    <main class="flex-1 lg:ml-64 p-6">
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Categories</h1>
+      </div>
+
+      <!-- Add Category -->
+      <div class="bg-white rounded-xl shadow-sm border
+                  border-gray-100 p-6 mb-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-4">
+          Add New Category
+        </h2>
+        <div class="flex gap-3">
+          <input type="text" id="cat-name"
+                 placeholder="Category name *"
+                 class="flex-1 px-4 py-2 border border-gray-300
+                        rounded-lg text-sm focus:outline-none
+                        focus:ring-2 focus:ring-indigo-500"/>
+          <input type="text" id="cat-desc"
+                 placeholder="Description (optional)"
+                 class="flex-1 px-4 py-2 border border-gray-300
+                        rounded-lg text-sm focus:outline-none
+                        focus:ring-2 focus:ring-indigo-500"/>
+          <button onclick="addCategory()"
+                  class="bg-indigo-600 text-white px-6 py-2
+                         rounded-lg text-sm hover:bg-indigo-700
+                         transition whitespace-nowrap">
+            + Add Category
+          </button>
+        </div>
+      </div>
+
+      <!-- Categories Table -->
+      <div class="bg-white rounded-xl shadow-sm border
+                  border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-100">
+              <tr>
+                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Category</th>
+                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Parent</th>
+                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Products</th>
+                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="categories-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/config.js"></script>
+  <script src="../js/core/auth.js"></script>
+  <script src="../js/core/api.js"></script>
+  <script src="../js/core/router.js"></script>
+  <script src="../js/core/utils.js"></script>
+  <script src="../js/components/toast.js"></script>
+  <script src="../js/components/loader.js"></script>
+  <script src="../js/components/modal.js"></script>
+  <script src="../js/components/navbar.js"></script>
+  <script src="../js/pages/admin/categories.js"></script>
+</body>
+</html>

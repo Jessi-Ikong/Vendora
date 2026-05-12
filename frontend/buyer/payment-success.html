@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Successful — Vendora</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/main.css" />
+  </head>
+  <body class="bg-gray-50 min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-md w-full text-center">
+      <!-- Success Animation -->
+      <div
+        class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl"
+      >
+        🎉
+      </div>
+
+      <h1 class="text-3xl font-bold text-gray-900 mb-3">Payment Successful!</h1>
+      <p class="text-gray-500 mb-8">
+        Your order has been placed successfully. You'll receive a confirmation
+        email shortly.
+      </p>
+
+      <div
+        class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 text-left"
+      >
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-gray-500 text-sm">Status</span>
+            <span class="text-green-600 font-medium text-sm">
+              ✅ Confirmed
+            </span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500 text-sm">Payment</span>
+            <span class="text-green-600 font-medium text-sm"> ✅ Paid </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <a
+          href="orders.html"
+          class="flex-1 bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
+        >
+          View My Orders
+        </a>
+        <a
+          href="../index.html"
+          class="flex-1 border border-gray-300 py-3 rounded-xl font-semibold hover:bg-gray-50 transition text-gray-700"
+        >
+          Continue Shopping
+        </a>
+      </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/core/api.js"></script>
+    <script src="../js/core/router.js"></script>
+    <script src="../js/core/utils.js"></script>
+    <script src="../js/components/toast.js"></script>
+
+    <script>
+      // Verify payment with backend when redirected from Paystack
+      document.addEventListener("DOMContentLoaded", async () => {
+        // 1. Get reference from URL query string
+        const urlParams = new URLSearchParams(window.location.search);
+        const reference = urlParams.get("reference");
+
+        if (!reference) {
+          console.error("No payment reference in URL");
+          Toast.show("Payment reference not found", "error");
+          return;
+        }
+
+        // 2. Verify payment with backend
+        try {
+          const res = await api.get(`/payments/verify/${reference}`);
+
+          if (res?.ok) {
+            Toast.show("Payment verified successfully!", "success");
+            console.log("Order updated:", res.data.order);
+          } else {
+            Toast.show("Payment verification failed", "error");
+            console.error("Verification error:", res?.data?.message);
+          }
+        } catch (err) {
+          console.error("Payment verification error:", err);
+          Toast.show("Error verifying payment", "error");
+        }
+      });
+    </script>
+  </body>
+</html>

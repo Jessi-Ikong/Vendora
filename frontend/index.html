@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendora — Nigeria's Premier Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body class="bg-gray-50">
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- ─── Hero Section ─── -->
+    <section
+      class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 text-white py-20 px-4"
+    >
+      <div class="max-w-7xl mx-auto text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          Shop from the Best<br />
+          <span class="text-yellow-300">Nigerian Vendors</span>
+        </h1>
+        <p class="text-indigo-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
+          Discover thousands of products from verified vendors. Fast delivery,
+          secure payments, best prices.
+        </p>
+
+        <!-- Search bar -->
+        <div class="max-w-2xl mx-auto w-full px-4">
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="hero-search"
+              placeholder="Search for products, brands, vendors..."
+              class="flex-1 min-w-0 px-4 py-4 rounded-xl text-gray-900 focus:outline-none focus:ring-4 focus:ring-yellow-300 text-base"
+            />
+            <button
+              onclick="heroSearch()"
+              class="bg-yellow-400 text-gray-900 px-6 py-4 rounded-xl font-bold text-base hover:bg-yellow-300 transition whitespace-nowrap flex-shrink-0"
+            >
+              Search 🔍
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick categories -->
+        <div
+          class="flex flex-wrap justify-center gap-3 mt-8"
+          id="quick-categories"
+        ></div>
+      </div>
+    </section>
+
+    <!-- ─── Stats Bar ─── -->
+    <section class="bg-white border-b border-gray-100">
+      <div
+        class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center"
+      >
+        <div>
+          <p class="text-2xl font-bold text-indigo-600">500+</p>
+          <p class="text-gray-500 text-sm">Products</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-indigo-600">50+</p>
+          <p class="text-gray-500 text-sm">Verified Vendors</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-indigo-600">1000+</p>
+          <p class="text-gray-500 text-sm">Happy Customers</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-indigo-600">24/7</p>
+          <p class="text-gray-500 text-sm">Customer Support</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Categories ─── -->
+    <section class="max-w-7xl mx-auto px-4 py-16">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-2xl font-bold text-gray-900">Shop by Category</h2>
+        <a
+          href="products.html"
+          class="text-indigo-600 hover:underline text-sm font-medium"
+        >
+          View all →
+        </a>
+      </div>
+      <div
+        id="categories-grid"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
+      >
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ─── Best Sellers ─── -->
+    <section class="bg-white py-16">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-2xl font-bold text-gray-900">🔥 Best Sellers</h2>
+          <a
+            href="products.html?sort=popular"
+            class="text-indigo-600 hover:underline text-sm font-medium"
+          >
+            View all →
+          </a>
+        </div>
+        <div
+          id="best-sellers-grid"
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6"
+        >
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Top Rated ─── -->
+    <section class="max-w-7xl mx-auto px-4 py-16">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-2xl font-bold text-gray-900">⭐ Top Rated</h2>
+        <a
+          href="products.html?sort=rated"
+          class="text-indigo-600 hover:underline text-sm font-medium"
+        >
+          View all →
+        </a>
+      </div>
+      <div
+        id="top-rated-grid"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6"
+      >
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ─── How It Works ─── -->
+    <section class="bg-indigo-50 py-16">
+      <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-2xl font-bold text-gray-900 text-center mb-12">
+          How Vendora Works
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center">
+            <div
+              class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4"
+            >
+              🔍
+            </div>
+            <h3 class="font-bold text-lg mb-2">Browse & Discover</h3>
+            <p class="text-gray-600">
+              Explore thousands of products from verified Nigerian vendors.
+              Filter by category, price, and ratings.
+            </p>
+          </div>
+          <div class="text-center">
+            <div
+              class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4"
+            >
+              🛒
+            </div>
+            <h3 class="font-bold text-lg mb-2">Add to Cart & Checkout</h3>
+            <p class="text-gray-600">
+              Add your favourite items to cart and checkout securely with
+              Paystack — cards, bank transfer, USSD.
+            </p>
+          </div>
+          <div class="text-center">
+            <div
+              class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4"
+            >
+              📦
+            </div>
+            <h3 class="font-bold text-lg mb-2">Fast Delivery</h3>
+            <p class="text-gray-600">
+              Track your order in real time. Vendors ship directly to your door
+              across Nigeria.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CTA Banner ─── -->
+    <section
+      class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16 px-4"
+    >
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to Start Selling?</h2>
+        <p class="text-indigo-100 mb-8 text-lg">
+          Join hundreds of vendors already making money on Vendora. Set up your
+          store in minutes.
+        </p>
+        <a
+          href="register.html"
+          class="bg-white text-indigo-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-50 transition inline-block"
+        >
+          Open Your Store →
+        </a>
+      </div>
+    </section>
+
+    <!-- ─── Footer ─── -->
+    <footer class="bg-gray-900 text-gray-400 py-12 px-4">
+      <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="col-span-2 md:col-span-1">
+          <h3 class="text-white text-xl font-bold mb-4">Vendora</h3>
+          <p class="text-sm leading-relaxed">
+            Nigeria's premier multi-vendor marketplace. Shop with confidence,
+            sell with ease.
+          </p>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-4">Shop</h4>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <a href="products.html" class="hover:text-white transition"
+                >All Products</a
+              >
+            </li>
+            <li>
+              <a
+                href="products.html?sort=popular"
+                class="hover:text-white transition"
+                >Best Sellers</a
+              >
+            </li>
+            <li>
+              <a
+                href="products.html?sort=rated"
+                class="hover:text-white transition"
+                >Top Rated</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-4">Sell</h4>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <a href="register.html" class="hover:text-white transition"
+                >Start Selling</a
+              >
+            </li>
+            <li>
+              <a
+                href="vendor/dashboard.html"
+                class="hover:text-white transition"
+                >Vendor Dashboard</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-4">Account</h4>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <a href="login.html" class="hover:text-white transition">Login</a>
+            </li>
+            <li>
+              <a href="register.html" class="hover:text-white transition"
+                >Register</a
+              >
+            </li>
+            <li>
+              <a href="buyer/orders.html" class="hover:text-white transition"
+                >My Orders</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        class="max-w-7xl mx-auto border-t border-gray-800 mt-8 pt-8 text-center text-sm"
+      >
+        <p>© 2026 Vendora. Built with ❤️ in Nigeria.</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/core/auth.js"></script>
+    <script src="js/core/api.js"></script>
+    <script src="js/core/router.js"></script>
+    <script src="js/core/utils.js"></script>
+    <script src="js/components/toast.js"></script>
+    <script src="js/components/loader.js"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/navbar.js"></script>
+    <script src="js/components/productCard.js"></script>
+    <script src="js/pages/home.js"></script>
+  </body>
+</html>

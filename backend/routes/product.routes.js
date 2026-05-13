@@ -16,6 +16,7 @@ const {
   addImageHandler,
   setPrimaryImageHandler,
   deleteImageHandler,
+  uploadImageHandler,
 } = require("../controllers/product.controller");
 
 // ─── Public routes ────────────────────────────────────────────
@@ -31,7 +32,25 @@ router.post("/", verifyToken, verifyVendor, createProductHandler);
 router.put("/:id", verifyToken, verifyVendor, updateProductHandler);
 router.put("/:id/publish", verifyToken, verifyVendor, togglePublishHandler);
 router.delete("/:id", verifyToken, verifyVendor, deleteProductHandler);
-router.post("/:id/images", verifyToken, verifyVendor, addImageHandler);
+// router.post("/:id/images", verifyToken, verifyVendor, addImageHandler);
+const upload = require("../middleware/upload.middleware");
+
+router.post(
+  "/:id/images",
+  verifyToken,
+  verifyVendor,
+  upload.single("image"),
+  addImageHandler,
+);
+
+// New route for direct file upload
+router.post(
+  "/:id/images/upload",
+  verifyToken,
+  verifyVendor,
+  upload.single("image"),
+  uploadImageHandler,
+);
 router.put(
   "/:id/images/:imageId/primary",
   verifyToken,

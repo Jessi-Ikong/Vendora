@@ -134,11 +134,9 @@ const createProductHandler = async (req, res) => {
     // 1. Get vendor profile
     const vendorProfile = await getVendorProfileByUserId(req.user.id);
     if (!vendorProfile) {
-      return res
-        .status(404)
-        .json({
-          message: "Vendor profile not found. Please set up your store first.",
-        });
+      return res.status(404).json({
+        message: "Vendor profile not found. Please set up your store first.",
+      });
     }
 
     // 2. Check vendor is approved
@@ -333,6 +331,55 @@ const deleteImageHandler = async (req, res) => {
   }
 };
 
+const { uploadImage } = require("../utils/cloudinaryUpload");
+
+// ─── UPLOAD product image file (vendor only) ──────────────────
+const uploadImageHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check file was provided
+    if (!req.file) {
+      return res.status(400).json({
+        message: "Please select an image file",
+      });
+    }
+
+    // Check vendor owns this product
+    const vendorProfile = await getVendorProfileByUserId(req.user.id);
+    if (!vendorProfile) {
+      return res.status(404).json({
+        message: "Vendor profile not found",
+      });
+    }
+
+    const product = await getProductById(id);
+    if (!product || product.vendor_id !== vendorProfile.id) {
+      return res.status(403).json({
+        message: "You can only upload images for your own products",
+      });
+    }
+
+    // Upload to Cloudinary
+    const result = await uploadImage(req.file.buffer, "vendora/products");
+
+    // Save URL to database
+    const isPrimary = req.body.is_primary === "true";
+    const image = await addProductImage(id, result.secure_url, isPrimary);
+
+    res.status(201).json({
+      message: "Image uploaded successfully",
+      image_url: result.secure_url,
+      image,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Upload failed",
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   getProducts,
   getProduct,
@@ -347,4 +394,5 @@ module.exports = {
   addImageHandler,
   setPrimaryImageHandler,
   deleteImageHandler,
+  uploadImageHandler,
 };

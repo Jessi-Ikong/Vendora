@@ -26,7 +26,6 @@ const loadOrders = async () => {
 const renderOrders = (orders) => {
   const tbody = document.getElementById("orders-table");
   const emptyState = document.getElementById("empty-state");
-
   if (orders.length === 0) {
     tbody.innerHTML = "";
     emptyState.classList.remove("hidden");

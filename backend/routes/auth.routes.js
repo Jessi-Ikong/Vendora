@@ -3,6 +3,9 @@ const router = express.Router();
 const verifyToken = require("../middleware/auth.middleware");
 const validate = require("../middleware/validate.middleware");
 const {
+  checkLoginRateLimit,
+} = require("../middleware/loginRateLimit.middleware");
+const {
   validateRegister,
   validateLogin,
   validateUpdatePassword,
@@ -19,7 +22,7 @@ const {
 
 // Public routes
 router.post("/register", validateRegister, validate, register);
-router.post("/login", validateLogin, validate, login);
+router.post("/login", checkLoginRateLimit, validateLogin, validate, login);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
 

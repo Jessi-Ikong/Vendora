@@ -23,7 +23,9 @@ const loadProducts = async () => {
     return;
   }
 
-  allProducts = res.data.products;
+  allProducts = (res.data.products || []).sort((a, b) => {
+    return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+  });
 
   document.getElementById("products-count").textContent =
     `${allProducts.length} product${allProducts.length !== 1 ? "s" : ""}`;

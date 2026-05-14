@@ -8,3 +8,4 @@ const CONFIG = {
     : "https://vendora-3-gn0c.onrender.com/api",
   PAYSTACK_PUBLIC_KEY: "pk_test_21da6f714b71ad95c844372dc02e1ae620a370e5",
 };
+

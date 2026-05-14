@@ -21,8 +21,16 @@ const validateRegister = [
     .notEmpty()
     .withMessage("Password is required")
     .bail()
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters"),
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters")
+    .matches(/[A-Z]/)
+    .withMessage("Password must contain an uppercase letter")
+    .matches(/[a-z]/)
+    .withMessage("Password must contain a lowercase letter")
+    .matches(/[0-9]/)
+    .withMessage("Password must contain a number")
+    .matches(/[!@#$%^&*]/)
+    .withMessage("Password must contain a special character (!@#$%^&*)"),
 
   body("role")
     .optional()
@@ -51,8 +59,16 @@ const validateUpdatePassword = [
     .notEmpty()
     .withMessage("New password is required")
     .bail()
-    .isLength({ min: 6 })
-    .withMessage("New password must be at least 6 characters"),
+    .isLength({ min: 8 })
+    .withMessage("New password must be at least 8 characters")
+    .matches(/[A-Z]/)
+    .withMessage("New password must contain an uppercase letter")
+    .matches(/[a-z]/)
+    .withMessage("New password must contain a lowercase letter")
+    .matches(/[0-9]/)
+    .withMessage("New password must contain a number")
+    .matches(/[!@#$%^&*]/)
+    .withMessage("New password must contain a special character (!@#$%^&*)"),
 ];
 
 module.exports = {

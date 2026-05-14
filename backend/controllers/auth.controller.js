@@ -18,9 +18,9 @@ const {
 } = require("../middleware/loginRateLimit.middleware");
 
 // ─── Helper — Generate JWT ────────────────────────────────────
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+const generateToken = (userId, role) => {
+  return jwt.sign({ userId, role }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN || "7d",
   });
 };
 
@@ -48,7 +48,7 @@ const register = async (req, res) => {
     }
 
     // 5. Generate token
-    const token = generateToken(newUser.id);
+    const token = generateToken(newUser.id, newUser.role);
 
     // 6. Send welcome email in background
     const { sendWelcomeEmail } = require("../utils/email");
@@ -97,7 +97,7 @@ const login = async (req, res) => {
     clearLoginAttempts(email);
 
     // 5. Generate token
-    const token = generateToken(user.id);
+    const token = generateToken(user.id, user.role);
 
     // 6. Return user without password
     const { password: _, ...userWithoutPassword } = user;

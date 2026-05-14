@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const verifyToken = require("../middleware/auth.middleware");
 const { verifyVendor } = require("../middleware/role.middleware");
+const validate = require("../middleware/validate.middleware");
+const {
+  validateCreateProduct,
+  validateUpdateProduct,
+} = require("../validators/product.validators");
 const {
   getProducts,
   getProduct,
@@ -28,8 +33,22 @@ router.get("/:slug", getProduct);
 
 // ─── Vendor only routes ───────────────────────────────────────
 router.get("/vendor/mine", verifyToken, verifyVendor, getMyProducts);
-router.post("/", verifyToken, verifyVendor, createProductHandler);
-router.put("/:id", verifyToken, verifyVendor, updateProductHandler);
+router.post(
+  "/",
+  verifyToken,
+  verifyVendor,
+  validateCreateProduct,
+  validate,
+  createProductHandler,
+);
+router.put(
+  "/:id",
+  verifyToken,
+  verifyVendor,
+  validateUpdateProduct,
+  validate,
+  updateProductHandler,
+);
 router.put("/:id/publish", verifyToken, verifyVendor, togglePublishHandler);
 router.delete("/:id", verifyToken, verifyVendor, deleteProductHandler);
 // router.post("/:id/images", verifyToken, verifyVendor, addImageHandler);

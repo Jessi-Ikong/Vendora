@@ -39,9 +39,8 @@
       <div class="flex min-h-screen">
         <!-- ─── Sidebar ─── -->
         <aside
-          class="w-64 bg-white border-r border-gray-100 fixed top-16 left-0 bottom-0 overflow-y-auto hidden lg:block lg:relative lg:z-auto z-40 transform transition-transform duration-300 ease-out lg:transform-none"
-          :class="sidebarOpen ? 'block' : 'hidden lg:block'"
-          @click="sidebarOpen = false"
+          class="w-64 bg-white border-r border-gray-100 fixed top-16 left-0 bottom-0 overflow-y-auto transform transition-transform duration-300 ease-out lg:translate-x-0 lg:relative lg:z-auto"
+          :class="sidebarOpen ? 'translate-x-0 z-40' : '-translate-x-full z-40'"
         >
           <div class="p-6">
             <p

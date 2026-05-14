@@ -1,3 +1,4 @@
+const xss = require("xss");
 const {
   getProductReviews,
   getReviewById,
@@ -73,7 +74,15 @@ const addReview = async (req, res) => {
     }
 
     // 5. Create review
-    const review = await createReview(productId, req.user.id, rating, comment);
+    const review = await createReview(
+      productId,
+      req.user.id,
+      rating,
+      xss(comment || "", {
+        whiteList: {}, // No HTML tags allowed
+        stripIgnoredTag: true,
+      }),
+    );
 
     // 6. Update product average rating
     await updateProductRating(productId);
@@ -110,7 +119,12 @@ const editReview = async (req, res) => {
       id,
       req.user.id,
       rating || existing.rating,
-      comment !== undefined ? comment : existing.comment,
+      comment !== undefined
+        ? xss(comment || "", {
+            whiteList: {},
+            stripIgnoredTag: true,
+          })
+        : existing.comment,
     );
 
     // 3. Update product average rating

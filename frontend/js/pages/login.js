@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Redirect if already logged in
-//   if (Auth.isLoggedIn()) {
-//     const user = Auth.getUser();
-//     if (user.role === "admin") window.location.href = "admin/dashboard.html";
-//     else if (user.role === "vendor")
-//       window.location.href = "vendor/dashboard.html";
-//     else window.location.href = "buyer/dashboard.html";
-//     return;
-//   }
+  if (Auth.isLoggedIn()) {
+    const user = Auth.getUser();
+    if (user.role === "admin") window.location.href = "admin/dashboard.html";
+    else if (user.role === "vendor")
+      window.location.href = "vendor/dashboard.html";
+    else window.location.href = "buyer/dashboard.html";
+    return;
+  }
 });
 
 // Handle form submission

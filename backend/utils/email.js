@@ -5,8 +5,8 @@ require("dotenv").config();
 // The transporter is the email sending engine
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
-  port: 465,
-  secure: true,
+  port: parseInt(process.env.EMAIL_PORT, 10) || 465,
+  secure: process.env.EMAIL_PORT == 465,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -17,19 +17,30 @@ const transporter = nodemailer.createTransport({
 transporter.verify((err, success) => {
   if (err) {
     console.error("❌ Email service failed:", err.message);
+    console.error("   Host:", process.env.EMAIL_HOST);
+    console.error("   Port:", process.env.EMAIL_PORT);
+    console.error("   User:", process.env.EMAIL_USER);
   } else {
     console.log("✅ Email service ready");
+    console.log("   From:", process.env.EMAIL_USER);
   }
 });
 
 // ─── Helper — send email ──────────────────────────────────────
 const sendEmail = async (to, subject, html) => {
-  await transporter.sendMail({
-    from: `"Vendora" <jessiikong404@gmail.com>`,
-    to,
-    subject,
-    html,
-  });
+  try {
+    const result = await transporter.sendMail({
+      from: `"Vendora" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      html,
+    });
+    console.log(`✅ Email sent to ${to}:`, result.messageId);
+    return result;
+  } catch (err) {
+    console.error(`❌ Failed to send email to ${to}:`, err.message);
+    throw err;
+  }
 };
 
 // ─── Welcome Email ────────────────────────────────────────────

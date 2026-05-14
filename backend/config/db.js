@@ -5,7 +5,9 @@ const pool = new Pool(
   process.env.DATABASE_URL
     ? {
         connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }, // Required for Supabase
+        ssl: {
+          rejectUnauthorized: false, // ← this fixes the certificate error
+        },
       }
     : {
         host: process.env.DB_HOST,

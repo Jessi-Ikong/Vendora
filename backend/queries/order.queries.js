@@ -1,12 +1,12 @@
 const pool = require("../config/db");
 
 // ─── Create order ─────────────────────────────────────────────
-const createOrder = async (client, buyerId, addressId, totalAmount) => {
+const createOrder = async (client, buyerId, addressId, totalAmount, deliveryCode) => {
   const result = await client.query(
-    `INSERT INTO orders (buyer_id, address_id, total_amount)
-     VALUES ($1, $2, $3)
+    `INSERT INTO orders (buyer_id, address_id, total_amount, delivery_code)
+     VALUES ($1, $2, $3, $4)
      RETURNING *`,
-    [buyerId, addressId, totalAmount],
+    [buyerId, addressId, totalAmount, deliveryCode],
   );
   return result.rows[0];
 };
@@ -217,6 +217,53 @@ const getOrderByPaystackRef = async (reference) => {
   return result.rows[0];
 };
 
+// ─── Verify delivery code and update order item status ───────
+const verifyDeliveryCode = async (client, itemId, vendorId, deliveryCode) => {
+  // 1. Get the order item and verify it belongs to the vendor
+  const itemResult = await client.query(
+    `SELECT oi.*, o.delivery_code, o.id AS order_id
+     FROM order_items oi
+     JOIN orders o ON oi.order_id = o.id
+     WHERE oi.id = $1 AND oi.vendor_id = $2`,
+    [itemId, vendorId],
+  );
+
+  if (itemResult.rows.length === 0) {
+    return { success: false, message: "Order item not found" };
+  }
+
+  const item = itemResult.rows[0];
+
+  // 2. Verify the delivery code matches
+  if (item.delivery_code !== deliveryCode) {
+    return { success: false, message: "Invalid delivery code" };
+  }
+
+  // 3. Update the order item status to 'delivered'
+  const updateResult = await client.query(
+    `UPDATE order_items
+     SET status = 'delivered'
+     WHERE id = $1
+     RETURNING *`,
+    [itemId],
+  );
+
+  // 4. Update the overall order status based on all items
+  await client.query(
+    `UPDATE orders
+     SET status = CASE
+       WHEN (SELECT COUNT(*) FROM order_items WHERE order_id = $1 AND status != 'delivered') = 0
+         THEN 'delivered'
+       ELSE 'shipped'
+     END,
+     updated_at = NOW()
+     WHERE id = $1`,
+    [item.order_id],
+  );
+
+  return { success: true, message: "Delivery verified successfully", item: updateResult.rows[0] };
+};
+
 module.exports = {
   createOrder,
   createOrderItems,
@@ -232,4 +279,5 @@ module.exports = {
   getVendorOrders,
   updateOrderItemStatus,
   getOrderByPaystackRef,
+  verifyDeliveryCode,
 };

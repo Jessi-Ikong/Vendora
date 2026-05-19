@@ -125,6 +125,7 @@ CREATE TABLE orders (
     payment_status   VARCHAR(30)     NOT NULL DEFAULT 'unpaid',
     payment_method   VARCHAR(50)     DEFAULT 'paystack',
     paystack_ref     TEXT,
+    delivery_code    VARCHAR(10),
     notes            TEXT,
     created_at       TIMESTAMP       DEFAULT NOW(),
     updated_at       TIMESTAMP       DEFAULT NOW()

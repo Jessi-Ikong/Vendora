@@ -8,6 +8,7 @@ const {
   getOrderItems,
   cancelOrder,
   restoreStock,
+  verifyDeliveryCode,
 } = require("../queries/order.queries");
 const {
   getCartWithItems,
@@ -18,6 +19,12 @@ const {
   getAddressById,
   getDefaultAddress,
 } = require("../queries/address.queries");
+const { getVendorByUserId } = require("../queries/vendor.queries");
+
+// ─── Helper — Generate 6-digit delivery code ──────────────────
+const generateDeliveryCode = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
 
 // ─── CHECKOUT ─────────────────────────────────────────────────
 const checkout = async (req, res) => {
@@ -70,18 +77,22 @@ const checkout = async (req, res) => {
       return sum + parseFloat(item.subtotal);
     }, 0);
 
-    // 5. BEGIN TRANSACTION
+    // 5. Generate delivery code
+    const deliveryCode = generateDeliveryCode();
+
+    // 6. BEGIN TRANSACTION
     await client.query("BEGIN");
 
-    // 6. Create the order
+    // 7. Create the order
     const order = await createOrder(
       client,
       req.user.id,
       address.id,
       totalAmount.toFixed(2),
+      deliveryCode,
     );
 
-    // 7. Create order items
+    // 8. Create order items
     const orderItems = items.map((item) => ({
       product_id: item.product_id,
       vendor_id: item.vendor_id,
@@ -94,21 +105,21 @@ const checkout = async (req, res) => {
 
     await createOrderItems(client, order.id, orderItems);
 
-    // 8. Decrement stock for each product
+    // 9. Decrement stock for each product
     for (const item of items) {
       await decrementStock(client, item.product_id, item.quantity);
     }
 
-    // 9. Clear the cart
+    // 10. Clear the cart
     const cart = await getCartByUserId(req.user.id);
     await client.query(`DELETE FROM cart_items WHERE cart_id = $1`, [cart.id]);
 
-    // 10. COMMIT — save everything to database
+    // 11. COMMIT — save everything to database
     await client.query("COMMIT");
 
     // Send order confirmation email in background
     const { sendOrderConfirmationEmail } = require("../utils/email");
-    sendOrderConfirmationEmail(req.user.name, req.user.email, order, orderItems)
+    sendOrderConfirmationEmail(req.user.name, req.user.email, order, orderItems, deliveryCode)
       .then(() =>
         console.log(`✅ Order confirmation sent to ${req.user.email}`),
       )
@@ -194,9 +205,57 @@ const cancelOrderHandler = async (req, res) => {
   }
 };
 
+// ─── VERIFY DELIVERY CODE (VENDOR) ────────────────────────────
+const verifyDeliveryCodeHandler = async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    const { itemId, deliveryCode } = req.body;
+
+    if (!itemId || !deliveryCode) {
+      return res.status(400).json({
+        message: "Item ID and delivery code are required",
+      });
+    }
+
+    // Get vendor profile for this user
+    const vendor = await getVendorByUserId(req.user.id);
+    if (!vendor) {
+      return res.status(403).json({
+        message: "You don't have a vendor profile",
+      });
+    }
+
+    // Begin transaction
+    await client.query("BEGIN");
+
+    // Verify delivery code and update status
+    const result = await verifyDeliveryCode(client, itemId, vendor.id, deliveryCode);
+
+    if (!result.success) {
+      await client.query("ROLLBACK");
+      return res.status(400).json({ message: result.message });
+    }
+
+    // Commit transaction
+    await client.query("COMMIT");
+
+    res.status(200).json({
+      message: result.message,
+      item: result.item,
+    });
+  } catch (err) {
+    await client.query("ROLLBACK");
+    res.status(500).json({ message: "Server error", error: err.message });
+  } finally {
+    client.release();
+  }
+};
+
 module.exports = {
   checkout,
   getMyOrders,
   getOrder,
   cancelOrderHandler,
+  verifyDeliveryCodeHandler,
 };

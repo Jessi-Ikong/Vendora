@@ -1,0 +1,7 @@
+{
+  "buildCommand": "npm run build:css",
+  "installCommand": "npm install",
+  "env": {
+    "ENABLE_PNPM": "false"
+  }
+}

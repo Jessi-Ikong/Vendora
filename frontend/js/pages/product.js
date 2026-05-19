@@ -33,12 +33,46 @@ const loadProduct = async (slug) => {
   renderProduct(currentProduct);
   await loadReviews(currentProduct.id);
 
-  // Show write review button if logged in buyer
+  // Check review eligibility and show write review button if eligible
   if (Auth.isLoggedIn() && Auth.isBuyer()) {
-    document.getElementById("write-review-btn").classList.remove("hidden");
+    await checkAndShowReviewButton(currentProduct.id);
   }
 
   document.getElementById("product-content").classList.remove("hidden");
+};
+
+// ─── Check Review Eligibility ─────────────────────────────────
+const checkAndShowReviewButton = async (productId) => {
+  const token = Auth.getToken();
+  const res = await api.get(
+    `/reviews/product/${productId}/check-eligibility`,
+    token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+  );
+
+  if (res?.ok && res.data.canReview) {
+    document.getElementById("write-review-btn").classList.remove("hidden");
+    
+    // If user already has a review, show "Edit Review" instead
+    if (res.data.canEdit) {
+      const btn = document.getElementById("write-review-btn");
+      btn.textContent = "✏️ Edit Your Review";
+      btn.onclick = showReviewForm;
+    }
+  } else {
+    // Hide review button and show reason if available
+    document.getElementById("write-review-btn").classList.add("hidden");
+    
+    // Optionally show a message below reviews
+    if (res?.data?.reason) {
+      const reviewSection = document.getElementById("reviews");
+      if (reviewSection) {
+        const msg = document.createElement("p");
+        msg.className = "text-sm text-gray-500 italic text-center py-4";
+        msg.textContent = res.data.reason;
+        reviewSection.appendChild(msg);
+      }
+    }
+  }
 };
 
 // ─── Render Product ───────────────────────────────────────────

@@ -166,9 +166,63 @@ const removeReview = async (req, res) => {
   }
 };
 
+// ─── CHECK if user can review product ──────────────────────
+const checkReviewEligibility = async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    if (!req.user) {
+      return res.status(200).json({ canReview: false, reason: "Not logged in" });
+    }
+
+    // Check if user is a buyer
+    if (req.user.role !== "buyer") {
+      return res.status(200).json({
+        canReview: false,
+        reason: "Only buyers can review products",
+      });
+    }
+
+    // Check product exists
+    const product = await getProductById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Check if buyer has purchased and received this product
+    const purchased = await verifyPurchase(productId, req.user.id);
+    if (!purchased) {
+      return res.status(200).json({
+        canReview: false,
+        reason: "You must purchase and receive this product to review it",
+      });
+    }
+
+    // Check if user already has a review for this product
+    const existing = await getExistingReview(productId, req.user.id);
+    if (existing) {
+      return res.status(200).json({
+        canReview: true,
+        canEdit: true,
+        existingReviewId: existing.id,
+        reason: "You have already reviewed this product. You can edit your review.",
+      });
+    }
+
+    res.status(200).json({
+      canReview: true,
+      canEdit: false,
+      reason: "You can review this product",
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
 module.exports = {
   getReviews,
   addReview,
   editReview,
   removeReview,
+  checkReviewEligibility,
 };

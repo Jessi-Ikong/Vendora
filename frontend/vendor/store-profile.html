@@ -177,6 +177,83 @@
             <h2 class="text-lg font-bold text-gray-900 mb-4">Store Status</h2>
             <div id="store-status-content"></div>
           </div>
+
+          <!-- Personal Settings -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-6">
+              Personal Settings
+            </h2>
+
+            <div class="space-y-6">
+              <!-- Update Name -->
+              <form id="name-form" class="space-y-4">
+                <h3 class="text-sm font-medium text-gray-700">Update Name</h3>
+                <div>
+                  <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Your Name
+                  </label>
+                  <input
+                    type="text"
+                    id="user-name"
+                    placeholder="Your full name"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition disabled:opacity-50"
+                >
+                  Update Name
+                </button>
+              </form>
+
+              <hr class="border-gray-200" />
+
+              <!-- Change Password -->
+              <form id="password-form" class="space-y-4">
+                <h3 class="text-sm font-medium text-gray-700">Change Password</h3>
+                <div>
+                  <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    id="current-password"
+                    placeholder="Enter your current password"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-600 mb-1">
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    id="new-password"
+                    placeholder="Enter your new password"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Confirm New Password
+                  </label>
+                  <input
+                    type="password"
+                    id="confirm-password"
+                    placeholder="Confirm your new password"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition disabled:opacity-50"
+                >
+                  Change Password
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </main>
     </div>

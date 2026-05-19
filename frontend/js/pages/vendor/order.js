@@ -203,6 +203,45 @@ const renderOrder = (items) => {
       </div>
     </div>
   `;
+
+  // Show delivery code verification if order is shipped
+  const deliverySection = document.getElementById("delivery-section");
+  if (firstItem.status === "shipped") {
+    deliverySection.classList.remove("hidden");
+
+    // Handle delivery form submission
+    document.getElementById("delivery-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const code = document.getElementById("delivery-code-input").value.trim();
+
+      if (!code || code.length !== 6) {
+        Toast.show("Please enter a valid 6-digit code", "warning");
+        return;
+      }
+
+      // Send verification request with first item (all items from same order will be updated)
+      const firstItemId = items[0].item_id;
+      const res = await api.post("/orders/delivery/verify", {
+        itemId: firstItemId,
+        deliveryCode: code,
+      });
+
+      if (res?.ok) {
+        Toast.show("Delivery verified! Order marked as delivered ✅", "success");
+        // Reload order details
+        const id = new URLSearchParams(window.location.search).get("id");
+        await loadOrder(id);
+      } else {
+        Toast.show(
+          res?.data?.message || "Invalid delivery code",
+          "error"
+        );
+        document.getElementById("delivery-code-input").value = "";
+      }
+    });
+  } else {
+    deliverySection.classList.add("hidden");
+  }
 };
 
 // ─── Update Status ────────────────────────────────────────────

@@ -11,10 +11,25 @@ const {
   addReview,
   editReview,
   removeReview,
+  checkReviewEligibility,
 } = require("../controllers/review.controller");
+
+// ─── Optional Auth Middleware ─────────────────────────────────
+const optionalAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader?.startsWith("Bearer ")) {
+    verifyToken(req, res, next);
+  } else {
+    // User not authenticated, but that's OK for this endpoint
+    next();
+  }
+};
 
 // Public
 router.get("/product/:productId", getReviews);
+
+// Check eligibility (optional auth)
+router.get("/product/:productId/check-eligibility", optionalAuth, checkReviewEligibility);
 
 // Protected
 router.post(

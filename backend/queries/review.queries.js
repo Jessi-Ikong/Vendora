@@ -41,6 +41,7 @@ const verifyPurchase = async (productId, userId) => {
      WHERE oi.product_id = $1
      AND o.buyer_id = $2
      AND o.payment_status = 'paid'
+     AND oi.status = 'delivered'
      LIMIT 1`,
     [productId, userId],
   );

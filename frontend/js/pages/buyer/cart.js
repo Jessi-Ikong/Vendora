@@ -40,7 +40,9 @@ const renderCartItems = (items) => {
       (item) => `
     <div class="bg-white rounded-xl shadow-sm border
                 border-gray-100 p-4 flex gap-4"
-         id="cart-item-${item.item_id}">
+         id="cart-item-${item.item_id}"
+         data-stock="${item.stock}"
+         data-qty="${item.quantity}">
 
       <!-- Image -->
       <div class="w-24 h-24 flex-shrink-0 bg-gray-50
@@ -67,6 +69,9 @@ const renderCartItems = (items) => {
                       line-clamp-2">
               ${item.product_name}
             </a>
+            <p class="text-xs text-gray-500 mt-1">
+              Stock: ${item.stock} available
+            </p>
           </div>
           <button onclick="removeItem(${item.item_id})"
                   class="text-gray-300 hover:text-red-500
@@ -79,7 +84,7 @@ const renderCartItems = (items) => {
           <!-- Quantity Controls -->
           <div class="flex items-center border border-gray-200
                       rounded-lg overflow-hidden">
-            <button onclick="updateQty(${item.item_id}, ${item.quantity - 1})"
+            <button onclick="updateQty(${item.item_id}, ${item.quantity - 1}, ${item.stock})"
                     class="px-3 py-1 bg-gray-50 hover:bg-gray-100
                            text-gray-600 font-bold transition"
                     ${item.quantity <= 1 ? "disabled" : ""}>
@@ -89,7 +94,7 @@ const renderCartItems = (items) => {
                          text-gray-900">
               ${item.quantity}
             </span>
-            <button onclick="updateQty(${item.item_id}, ${item.quantity + 1})"
+            <button onclick="updateQty(${item.item_id}, ${item.quantity + 1}, ${item.stock})"
                     class="px-3 py-1 bg-gray-50 hover:bg-gray-100
                            text-gray-600 font-bold transition"
                     ${item.quantity >= item.stock ? "disabled" : ""}>
@@ -98,6 +103,21 @@ const renderCartItems = (items) => {
           </div>
 
           <!-- Price -->
+          <div class="text-right">
+            <p class="font-bold text-indigo-600">
+              ${Utils.formatPrice(item.subtotal)}
+            </p>
+            <p class="text-xs text-gray-400">
+              ${Utils.formatPrice(item.discount_price || item.price)} each
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
+    )
+    .join("");
+};
           <div class="text-right">
             <p class="font-bold text-indigo-600">
               ${Utils.formatPrice(item.subtotal)}
@@ -124,8 +144,14 @@ const renderSummary = (cart) => {
 };
 
 // ─── Update Quantity ──────────────────────────────────────────
-const updateQty = async (itemId, newQty) => {
+const updateQty = async (itemId, newQty, availableStock) => {
   if (newQty < 1) return;
+
+  // Prevent exceeding stock
+  if (newQty > availableStock) {
+    Toast.show(`Only ${availableStock} items available in stock`, "error");
+    return;
+  }
 
   const res = await api.put(`/cart/items/${itemId}`, {
     quantity: newQty,
@@ -134,6 +160,7 @@ const updateQty = async (itemId, newQty) => {
   if (res?.ok) {
     await loadCart();
     Navbar.updateCartCount();
+    Toast.show("Cart updated", "success");
   } else {
     Toast.show(res?.data?.message || "Failed to update", "error");
   }

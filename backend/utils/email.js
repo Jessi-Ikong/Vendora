@@ -110,7 +110,7 @@ const sendPasswordResetEmail = async (name, email, resetToken) => {
 };
 
 // ─── Order Confirmation Email ─────────────────────────────────
-const sendOrderConfirmationEmail = async (name, email, order, items) => {
+const sendOrderConfirmationEmail = async (name, email, order, items, deliveryCode) => {
   // Build items table rows
   const itemRows = items
     .map(
@@ -144,6 +144,18 @@ const sendOrderConfirmationEmail = async (name, email, order, items) => {
           <p><strong>Order ID:</strong> #${order.id}</p>
           <p><strong>Status:</strong> ${order.status}</p>
           <p><strong>Payment:</strong> ${order.payment_status}</p>
+        </div>
+
+        <div style="background: #fef3c7; border: 2px solid #f59e0b; border-radius: 8px;
+                    padding: 20px; margin: 20px 0;">
+          <p style="margin: 0; color: #92400e;"><strong>📦 Delivery Code:</strong></p>
+          <p style="margin: 10px 0 0 0; font-size: 24px; letter-spacing: 2px; 
+                    font-family: monospace; color: #b45309; font-weight: bold;">
+            ${deliveryCode}
+          </p>
+          <p style="margin: 10px 0 0 0; color: #92400e; font-size: 12px;">
+            Share this code with the delivery agent for verification.
+          </p>
         </div>
 
         <table style="width: 100%; border-collapse: collapse;">

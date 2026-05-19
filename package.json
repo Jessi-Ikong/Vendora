@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js"
+    "dev": "nodemon backend/server.js",
+    "build:css": "node build-css.js",
+    "watch:css": "nodemon --watch frontend/css/input.css --exec npm run build:css"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +31,11 @@
     "xss": "^1.0.15"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "@tailwindcss/postcss": "^4.3.0",
+    "autoprefixer": "^10.5.0",
+    "nodemon": "^3.1.14",
+    "postcss": "^8.5.14",
+    "postcss-cli": "^11.0.1",
+    "tailwindcss": "^4.3.0"
   }
 }
